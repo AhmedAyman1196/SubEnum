@@ -1,6 +1,5 @@
 import os , sys , re , subprocess , shlex
 from termcolor import colored
-from Wappalyzer import Wappalyzer, WebPage
 
 # ~~~~~~~~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~~
 
@@ -27,28 +26,28 @@ def checkURL(URL):
 	return re.match(regex, URL) is not None
 
 def WAFCheck(URL):
-	command = "wafw00f "+ URL + " | tee WAFCheck.log"
+	command = "wafw00f "+ URL 
 	res = run_command(command)
 	return res
 
 def gitCheck(URL):
 	run_command("mkdir gitDump")
-	command = "/opt/gitdumper/gitdumper.sh " + URL +"/.git/ gitDump/" + " | tee gitCheck.log"
+	command = "/opt/gitdumper/gitdumper.sh " + URL +"/.git/ gitDump/"
 	res = run_command(command)
 	return res
 
 def WPcheck(URL):
-	command = "wpscan --url " + URL + " | tee WPcheck.log"
+	command = "wpscan --url " + URL
 	res = run_command(command)
 	return res
 
-def Wappalyze(URL):
-	wappalyzer = Wappalyzer.latest()
-	webpage = WebPage.new_from_url(URL)
-	return wappalyzer.analyze(webpage) 
+def Wayback(URL):
+	command = 'echo '+URL+' | /opt/waybackurls/main > waybackurls.txt'
+	res = run_command(command)
+	return res
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~~~~~~ 			Main 		~~~~~~~~~~~~~~~~~~~~~
+# 							Main 		
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -89,7 +88,12 @@ WP = WPcheck(URL)
 for i in WP :
 	print(i)
 
-# problem with this library , manual for now
-# # ~~~~~~~~~~~~~~~~~~~~~ Wappalyzer (Fingerprint) ~~~~~~~~~~~~~~~~~~~~~
-# print(colored("\n\nRunning Wappalyzer ...\n\n",'green'))
-# print(Wappalyze(URL))
+# # ~~~~~~~~~~~~~~~~~~~~~ Wayback machine ~~~~~~~~~~~~~~~~~~~~~
+# print(colored("Checking wayback machine ...\n\n",'green'))
+# WB = Wayback(URL)
+# for i in WB :
+# 	print(i)
+
+
+
+
